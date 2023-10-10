@@ -15,7 +15,7 @@ Year | Award | Category
 -----|-------|--------
 2022- | ETH Zurich | Doctoral Student
 2020-2022 | ETH Zurich | M.Sc. Computer Science
-2017-2020 | Ecole Polytechnique | Diplôme ingénieur
+2017-2020 | Ecole Polytechnique | Diplôme d'Ingénieur
 
 
 ## Publications
