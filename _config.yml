@@ -4,6 +4,7 @@ url: "https://ahmedbouhoula.github.io"
 baseurl: ""
 
 markdown: kramdown
+ins_logo: "./eth-logo.png"
 
 tracking_id: #
 
