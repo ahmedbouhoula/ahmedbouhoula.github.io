@@ -1,10 +1,9 @@
-title: Karel Kubíček's research page
-author: Karel Kubíček
-url: "https://karelkubicek.github.io"
+title: Ahmed Bouhoula's research page
+author: Ahmed Bouhoula
+url: "https://ahmedbouhoula.github.io"
 baseurl: ""
 
 markdown: kramdown
-ins_logo: "./eth-logo.png"
 
 tracking_id: #
 
@@ -20,8 +19,6 @@ nav:
    link: "/"
  - name: "Paper posts"
    link: "posts"
- - name: "Contact"
-   link: "contact"
 
 collections:
   posts:

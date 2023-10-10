@@ -10,7 +10,7 @@ categories: FLoC privacy
 keywords: cookies, CMP, GDPR, privacy
 ---
 
-# Automated, Large-Scale Analysis of Cookie Notice Compliance
+# Automated Large-Scale Analysis of Cookie Notice Compliance
 
 **Authors: Ahmed Bouhoula, Karel Kubicek, Amit Zac, Carlos Cotrini, and David Basin**
 
@@ -18,7 +18,7 @@ keywords: cookies, CMP, GDPR, privacy
 
 *We present the first general, large-scale, automated analysis of cookie notice compliance. Our method is capable of interacting with cookie notices, e.g., by navigating through their settings. It observes declared processing purposes and available consent options using Natural Language Processing and compares the actual use of cookies with the declared usage. By virtue of the generality and scale of our analysis, we correct for the selection bias present in previous studies focusing on specific Consent Management Platforms (*CMP*). We also provide a more general view of the overall compliance picture using a set of 97k websites popular in the EU. We report, in particular, that 65.4% of websites offering a cookie rejection option likely collect user data despite explicit negative consent.*
 
-<!-- * Download author pre-print of the paper: [PDF](https://karelkubicek.github.io/assets/pdf/Generalized_GDPR_Violation_Detection_in_Cookie_Notices_preprint.pdf) -->
+<!-- * Download author pre-print of the paper: [PDF](https://ahmedbouhoula.github.io/assets/pdf/Generalized_GDPR_Violation_Detection_in_Cookie_Notices_preprint.pdf) -->
 * Request access to source code and interactive results visualization: [Google form](https://forms.gle/4cPPLnkwA241sKbP6)
 
 ### BibTex
@@ -26,7 +26,7 @@ keywords: cookies, CMP, GDPR, privacy
 ```latex
 @inproceedings{bouhoula2024automated,
   author = {Ahmed Bouhoula and Karel Kubicek and Amit Zac and Carlos Cotrini and David Basin},
-  title = {Automated, Large-Scale Analysis of Cookie Notice Compliance},
+  title = {Automated Large-Scale Analysis of Cookie Notice Compliance},
   booktitle = {33st USENIX Security Symposium (USENIX Security 24)},
   year = {2024},
   month = aug,
@@ -40,7 +40,7 @@ keywords: cookies, CMP, GDPR, privacy
 
 ### Motivation
 
-The EU tried to address ubiquitous tracking on websites by regulations, namely with the ePrivacy Directive and GDPR. Therefore are websites now asking for consent with these practices, often framed as "cookie consent." As numerous prior studies, including our own [CookieBlock](https://karelkubicek.github.io/post/cookieblock), showed, these notices fail the task to inform users and even more in giving users choices.
+The EU tried to address ubiquitous tracking on websites by regulations, namely with the ePrivacy Directive and GDPR. Therefore are websites now asking for consent with these practices, often framed as "cookie consent." As numerous prior studies, including our own [CookieBlock](https://ahmedbouhoula.github.io/post/cookieblock), showed, these notices fail the task to inform users and even more in giving users choices.
  <!-- This creates a false expectation of compliance while also harming web usability. -->
 
 These past studies are however significantly constrained, giving us biased measurements. Either they depend on specific technologies present in a subset of consent notice or they are manual and therefore cannot scale. Our work addresses these constraints by a crawler that interact with the notices and machine learning that classifies declared and observed practices of websites.
@@ -249,7 +249,7 @@ Crawler extracts the declared behavior by the notice (its text and interaction c
 
 * We predict the declared data collection purposes in the notice text using a BERT model. We trained this model using the dataset by [Santos et al.](https://arxiv.org/abs/2110.02597), where we reduced labels to binary decision whether the sentence declares data processing purpose that requires users' consent. This included the following purposes: profiling, advertising, custom content, analytics, and social media features. This model reaches 97.6% accuracy.
 * We predict the purpose of interactive elements of the cookie notice using a BERT model trained on a dataset of 2353 interactive elements annotated in notices by us. The labels are accept, reject, close, save, settings, and other. This model achieves 95.1% accuracy.
-* We classify whether the website uses cookies that require consent using an XGBoost model. This model is based on the prior [CookieBlock](https://karelkubicek.github.io/post/cookieblock) work, but it operates over all cookies of website, allowing us to classify when website uses such cookies with a precision of 98.67% and a recall of 91.82%.
+* We classify whether the website uses cookies that require consent using an XGBoost model. This model is based on the prior [CookieBlock](https://ahmedbouhoula.github.io/post/cookieblock) work, but it operates over all cookies of website, allowing us to classify when website uses such cookies with a precision of 98.67% and a recall of 91.82%.
 
 
 ### Violation detection
@@ -258,10 +258,10 @@ We select 97k websites for crawling using Chrome UX report. This list generalize
 
 The crawled data allows us to reason about differences between declared and observed behavior. The outputs of ML models are parameters for or decision tree, which outputs ten privacy violations or dark patterns.
 
-![Decision tree for violations](https://karelkubicek.github.io/assets/images/automated/decision_violations.svg)
+![Decision tree for violations](https://ahmedbouhoula.github.io/assets/images/automated/decision_violations.svg)
 *Decision tree that takes as input the classifications by our model and outputs all types of potential violations present on the website.*
 
-![Decision tree dark patterns](https://karelkubicek.github.io/assets/images/automated/decision_darkpatterns.svg){: style="float: left; width:50%"}![Observed violations](https://karelkubicek.github.io/assets/images/automated/violations_bar.svg){: style="float: left;width:50%;"}
+![Decision tree dark patterns](https://ahmedbouhoula.github.io/assets/images/automated/decision_darkpatterns.svg){: style="float: left; width:50%"}![Observed violations](https://ahmedbouhoula.github.io/assets/images/automated/violations_bar.svg){: style="float: left;width:50%;"}
 *On the left, the decision tree of dark patterns. On the right, observed statistics of potential violations and dark patterns.*
 
 ### Selected results of specific populations
@@ -271,7 +271,7 @@ We can parametrize website selection based on the country, popularity rank, and 
 * Popular websites have fewer **visible violations** such as missing notice, missing reject button, or undeclared purposes than less popular websites. Yet when it comes to how they **track users** the situation is the opposite. Popular websites ignore rejected consent, assume consent before user interacts with the notice, or assume consent after user uses "close button" more often than less popular websites.
 * Sampling bias of prior studies, stemming from reliance on specific consent notice technologies, makes the majority of observed results vastly different from Chrome UX report sample. Specifically, websites using [Transparency & Consent Framework](https://iabeurope.eu/transparency-consent-framework/) studied by [Matte et al.](https://doi.org/10.1109/SP40000.2020.00076) are far more violating consent.
 
-![Violations per rank](https://karelkubicek.github.io/assets/images/automated/violations_bar_per_rank.svg){: style="float: left; width:50%"}![Violations bias comparison](https://karelkubicek.github.io/assets/images/automated/violations_bias.svg){: style="float: left;width:50%;margin-bottom:20px;margin-top:20px;"}
+![Violations per rank](https://ahmedbouhoula.github.io/assets/images/automated/violations_bar_per_rank.svg){: style="float: left; width:50%"}![Violations bias comparison](https://ahmedbouhoula.github.io/assets/images/automated/violations_bias.svg){: style="float: left;width:50%;margin-bottom:20px;margin-top:20px;"}
 *On the left, we present violations per rank from the Chrome UX report. On the right, we compare our results with other studies and investigate whether their website selection caused any bias.*
 
 
