@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Automated, Large-Scale Analysis of Cookie Notice Compliance"
+title: "Automated Large-Scale Analysis of Cookie Notice Compliance"
 abstract: "Privacy regulations such as the General Data Protection Regulation (*GDPR*) require websites to inform EU-based users about non-essential data collection and to request their consent to this practice. Previous studies have documented widespread violation of these regulations. However, these studies provide a limited view of the general compliance picture: they are either restricted to a subset of notice types, detect only simple violations using prescribed patterns, or analyze notices manually. Thus, they are restricted both in their scope and in their ability to analyze violations at scale.
 
 We present the first general, large-scale, automated analysis of cookie notice compliance. Our method is capable of interacting with cookie notices, e.g., by navigating through their settings. It observes declared processing purposes and available consent options using Natural Language Processing and compares the actual use of cookies with the declared usage. By virtue of the generality and scale of our analysis, we correct for the selection bias present in previous studies focusing on specific Consent Management Platforms (*CMP*). We also provide a more general view of the overall compliance picture using a set of 97k websites popular in the EU. We report, in particular, that 65.4% of websites offering a cookie rejection option likely collect user data despite explicit negative consent."
@@ -12,15 +12,14 @@ keywords: cookies, CMP, GDPR, privacy
 
 # Automated, Large-Scale Analysis of Cookie Notice Compliance
 
-**Authors: Ahmed Bouhoula, Karel Kubicek <karel.kubicek@inf.ethz.ch>, Amit Zac, Carlos Cotrini, and David Basin**
+**Authors: Ahmed Bouhoula, Karel Kubicek, Amit Zac, Carlos Cotrini, and David Basin**
 
 **Abstract:** *Privacy regulations such as the General Data Protection Regulation (*GDPR*) require websites to inform EU-based users about non-essential data collection and to request their consent to this practice. Previous studies have documented widespread violation of these regulations. However, these studies provide a limited view of the general compliance picture: they are either restricted to a subset of notice types, detect only simple violations using prescribed patterns, or analyze notices manually. Thus, they are restricted both in their scope and in their ability to analyze violations at scale.*
 
 *We present the first general, large-scale, automated analysis of cookie notice compliance. Our method is capable of interacting with cookie notices, e.g., by navigating through their settings. It observes declared processing purposes and available consent options using Natural Language Processing and compares the actual use of cookies with the declared usage. By virtue of the generality and scale of our analysis, we correct for the selection bias present in previous studies focusing on specific Consent Management Platforms (*CMP*). We also provide a more general view of the overall compliance picture using a set of 97k websites popular in the EU. We report, in particular, that 65.4% of websites offering a cookie rejection option likely collect user data despite explicit negative consent.*
 
-* Download author pre-print of the paper: [PDF](https://karelkubicek.github.io/assets/pdf/Generalized_GDPR_Violation_Detection_in_Cookie_Notices_preprint.pdf)
+<!-- * Download author pre-print of the paper: [PDF](https://karelkubicek.github.io/assets/pdf/Generalized_GDPR_Violation_Detection_in_Cookie_Notices_preprint.pdf) -->
 * Request access to source code and interactive results visualization: [Google form](https://forms.gle/4cPPLnkwA241sKbP6)
-* Ahmed Bouhoula's MSc thesis: [PDF](https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/575741/BouhoulaAhmed.pdf?sequence=1&isAllowed=y)
 
 ### BibTex
 
@@ -250,7 +249,7 @@ Crawler extracts the declared behavior by the notice (its text and interaction c
 
 * We predict the declared data collection purposes in the notice text using a BERT model. We trained this model using the dataset by [Santos et al.](https://arxiv.org/abs/2110.02597), where we reduced labels to binary decision whether the sentence declares data processing purpose that requires users' consent. This included the following purposes: profiling, advertising, custom content, analytics, and social media features. This model reaches 97.6% accuracy.
 * We predict the purpose of interactive elements of the cookie notice using a BERT model trained on a dataset of 2353 interactive elements annotated in notices by us. The labels are accept, reject, close, save, settings, and other. This model achieves 95.1% accuracy.
-* We classify whether the website uses cookies that require consent using an XGBoost model. This model is based on our prior [CookieBlock](https://karelkubicek.github.io/post/cookieblock) work, but it operates over all cookies of website, allowing us to classify when website uses such cookies with a precision of 98.67% and a recall of 91.82%.
+* We classify whether the website uses cookies that require consent using an XGBoost model. This model is based on the prior [CookieBlock](https://karelkubicek.github.io/post/cookieblock) work, but it operates over all cookies of website, allowing us to classify when website uses such cookies with a precision of 98.67% and a recall of 91.82%.
 
 
 ### Violation detection
@@ -259,10 +258,10 @@ We select 97k websites for crawling using Chrome UX report. This list generalize
 
 The crawled data allows us to reason about differences between declared and observed behavior. The outputs of ML models are parameters for or decision tree, which outputs ten privacy violations or dark patterns.
 
-![Decision tree for violations](https://karelkubicek.github.io/assets/images/gen-cookies/decision_violations.svg)
+![Decision tree for violations](https://karelkubicek.github.io/assets/images/automated/decision_violations.svg)
 *Decision tree that takes as input the classifications by our model and outputs all types of potential violations present on the website.*
 
-![Decision tree dark patterns](https://karelkubicek.github.io/assets/images/gen-cookies/decision_darkpatterns.svg){: style="float: left; width:50%"}![Observed violations](https://karelkubicek.github.io/assets/images/gen-cookies/violations_bar.svg){: style="float: left;width:50%;"}
+![Decision tree dark patterns](https://karelkubicek.github.io/assets/images/automated/decision_darkpatterns.svg){: style="float: left; width:50%"}![Observed violations](https://karelkubicek.github.io/assets/images/automated/violations_bar.svg){: style="float: left;width:50%;"}
 *On the left, the decision tree of dark patterns. On the right, observed statistics of potential violations and dark patterns.*
 
 ### Selected results of specific populations
@@ -272,7 +271,7 @@ We can parametrize website selection based on the country, popularity rank, and 
 * Popular websites have fewer **visible violations** such as missing notice, missing reject button, or undeclared purposes than less popular websites. Yet when it comes to how they **track users** the situation is the opposite. Popular websites ignore rejected consent, assume consent before user interacts with the notice, or assume consent after user uses "close button" more often than less popular websites.
 * Sampling bias of prior studies, stemming from reliance on specific consent notice technologies, makes the majority of observed results vastly different from Chrome UX report sample. Specifically, websites using [Transparency & Consent Framework](https://iabeurope.eu/transparency-consent-framework/) studied by [Matte et al.](https://doi.org/10.1109/SP40000.2020.00076) are far more violating consent.
 
-![Violations per rank](https://karelkubicek.github.io/assets/images/gen-cookies/violations_bar_per_rank.svg){: style="float: left; width:50%"}![Violations bias comparison](https://karelkubicek.github.io/assets/images/gen-cookies/violations_bias.svg){: style="float: left;width:50%;margin-bottom:20px;margin-top:20px;"}
+![Violations per rank](https://karelkubicek.github.io/assets/images/automated/violations_bar_per_rank.svg){: style="float: left; width:50%"}![Violations bias comparison](https://karelkubicek.github.io/assets/images/automated/violations_bias.svg){: style="float: left;width:50%;margin-bottom:20px;margin-top:20px;"}
 *On the left, we present violations per rank from the Chrome UX report. On the right, we compare our results with other studies and investigate whether their website selection caused any bias.*
 
 
@@ -286,15 +285,3 @@ We can parametrize website selection based on the country, popularity rank, and 
 * **Q:** What is the probability that your violation decision tree produces false positives?
 
   **A:** We tuned the models to be conservative, so they rather produce false negatives. Our evaluation on 500 random websites quntifies both false positives and negatives, showing that our results are conservative. For more details, check Section 7 of the paper.
-
-
-### Acknowledgement
-
-The authors would like to thank:
-
- * Reviewers for their feedback and guidance.
-
-### Updates
-
-* *August 8, 2023:* Major update upon paper's acceptance.
-* *February 27, 2023:* The initial version of this page.
