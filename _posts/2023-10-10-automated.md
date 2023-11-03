@@ -6,7 +6,7 @@ abstract: "Privacy regulations such as the General Data Protection Regulation (*
 We present the first general, large-scale, automated analysis of cookie notice compliance. Our method is capable of interacting with cookie notices, e.g., by navigating through their settings. It observes declared processing purposes and available consent options using Natural Language Processing and compares the actual use of cookies with the declared usage. By virtue of the generality and scale of our analysis, we correct for the selection bias present in previous studies focusing on specific Consent Management Platforms (*CMP*). We also provide a more general view of the overall compliance picture using a set of 97k websites popular in the EU. We report, in particular, that 65.4% of websites offering a cookie rejection option likely collect user data despite explicit negative consent."
 authors: Ahmed Bouhoula, Karel Kubicek, Amit Zac, Carlos Cotrini, and David Basin
 publisher: Submitted to USENIX Security, 2023.
-categories: FLoC privacy
+categories: Machine Learning for Privacy, GDPR Compliance
 keywords: cookies, CMP, GDPR, privacy
 ---
 
@@ -40,7 +40,7 @@ keywords: cookies, CMP, GDPR, privacy
 
 ### Motivation
 
-The EU tried to address ubiquitous tracking on websites by regulations, namely with the ePrivacy Directive and GDPR. Therefore are websites now asking for consent with these practices, often framed as "cookie consent." As numerous prior studies, including our own [CookieBlock](https://ahmedbouhoula.github.io/post/cookieblock), showed, these notices fail the task to inform users and even more in giving users choices.
+The EU tried to address ubiquitous tracking on websites by regulations, namely with the ePrivacy Directive and GDPR. Therefore are websites now asking for consent with these practices, often framed as "cookie consent." As numerous prior studies, including our own [CookieBlock](https://karelkubicek.github.io/post/cookieblock), showed, these notices fail the task to inform users and even more in giving users choices.
  <!-- This creates a false expectation of compliance while also harming web usability. -->
 
 These past studies are however significantly constrained, giving us biased measurements. Either they depend on specific technologies present in a subset of consent notice or they are manual and therefore cannot scale. Our work addresses these constraints by a crawler that interact with the notices and machine learning that classifies declared and observed practices of websites.
@@ -249,7 +249,7 @@ Crawler extracts the declared behavior by the notice (its text and interaction c
 
 * We predict the declared data collection purposes in the notice text using a BERT model. We trained this model using the dataset by [Santos et al.](https://arxiv.org/abs/2110.02597), where we reduced labels to binary decision whether the sentence declares data processing purpose that requires users' consent. This included the following purposes: profiling, advertising, custom content, analytics, and social media features. This model reaches 97.6% accuracy.
 * We predict the purpose of interactive elements of the cookie notice using a BERT model trained on a dataset of 2353 interactive elements annotated in notices by us. The labels are accept, reject, close, save, settings, and other. This model achieves 95.1% accuracy.
-* We classify whether the website uses cookies that require consent using an XGBoost model. This model is based on the prior [CookieBlock](https://ahmedbouhoula.github.io/post/cookieblock) work, but it operates over all cookies of website, allowing us to classify when website uses such cookies with a precision of 98.67% and a recall of 91.82%.
+* We classify whether the website uses cookies that require consent using an XGBoost model. This model is based on the prior [CookieBlock](https://karelkubicek.github.io/post/cookieblock) work, but it operates over all cookies of website, allowing us to classify when website uses such cookies with a precision of 98.67% and a recall of 91.82%.
 
 
 ### Violation detection

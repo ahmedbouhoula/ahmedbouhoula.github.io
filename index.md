@@ -15,7 +15,8 @@ Year | Award | Category
 -----|-------|--------
 2022- | ETH Zurich | Doctoral Student
 2020-2022 | ETH Zurich | M.Sc. Computer Science
-2017-2020 | Ecole Polytechnique | Diplôme d'Ingénieur
+2017-2020 | Ecole Polytechnique | Engineering Degree
+2015-2017 | Lycée Louis-le-Grand | $Prépa$ (MP)
 
 
 ## Publications
@@ -23,7 +24,7 @@ Year | Award | Category
 * Automated, Large-Scale Analysis of Cookie Notice Compliance
   * *Ahmed Bouhoula, Karel Kubicek, Amit Zac, Carlos Cotrini, David Basin*
   * To appear at USENIX'24.
-  * [paper website](https://abouhoulabouhoula.github.io/post/bouhoula24automated)
+  * [paper website](https://ahmedbouhoula.github.io/post/automated.html)
 
 * A Security Policy Query Engine for Fully Automated Resolution of Anomalies in Firewall Configurations
   * *Ahmed Bouhoula, Anis Yazidi*
@@ -34,3 +35,8 @@ Year | Award | Category
 
 * Algorithms Lab
 * Formal Methods and Functional Programming
+
+
+## Contact
+
+You can contact me at <img src="assets/images/email.png">.
