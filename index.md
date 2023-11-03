@@ -16,7 +16,7 @@ Year | Award | Category
 2022- | ETH Zurich | Doctoral Student
 2020-2022 | ETH Zurich | M.Sc. Computer Science
 2017-2020 | Ecole Polytechnique | Engineering Degree
-2015-2017 | Lycée Louis-le-Grand | $Prépa$ (MP)
+2015-2017 | Lycée Louis-le-Grand | *Prépa* (MP)
 
 
 ## Publications
@@ -39,4 +39,4 @@ Year | Award | Category
 
 ## Contact
 
-You can contact me at <img src="assets/images/email.png">.
+You can contact me at <img src="assets/images/email.png" style="width: 30%; height: 30%">
