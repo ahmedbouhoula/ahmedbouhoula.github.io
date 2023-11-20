@@ -19,6 +19,8 @@ keywords: cookies, CMP, GDPR, privacy
 *We present the first general, large-scale, automated analysis of cookie notice compliance. Our method is capable of interacting with cookie notices, e.g., by navigating through their settings. It observes declared processing purposes and available consent options using Natural Language Processing and compares the actual use of cookies with the declared usage. By virtue of the generality and scale of our analysis, we correct for the selection bias present in previous studies focusing on specific Consent Management Platforms (*CMP*). We also provide a more general view of the overall compliance picture using a set of 97k websites popular in the EU. We report, in particular, that 65.4% of websites offering a cookie rejection option likely collect user data despite explicit negative consent.*
 
 <!-- * Download author pre-print of the paper: [PDF](https://ahmedbouhoula.github.io/assets/pdf/Generalized_GDPR_Violation_Detection_in_Cookie_Notices_preprint.pdf) -->
+* Conference page: [USENIX Security 2024](https://www.usenix.org/conference/usenixsecurity24/presentation/bouhoula)
+* Download author pre-print of the paper: [PDF](https://ahmedbouhoula.github.io/assets/pdf/bouhoula2024automated.pdf)
 * Request access to source code and interactive results visualization: [Google form](https://forms.gle/4cPPLnkwA241sKbP6)
 
 ### BibTex
@@ -40,19 +42,20 @@ keywords: cookies, CMP, GDPR, privacy
 
 ### Motivation
 
-The EU tried to address ubiquitous tracking on websites by regulations, namely with the ePrivacy Directive and GDPR. Therefore are websites now asking for consent with these practices, often framed as "cookie consent." As numerous prior studies, including our own [CookieBlock](https://karelkubicek.github.io/post/cookieblock), showed, these notices fail the task to inform users and even more in giving users choices.
- <!-- This creates a false expectation of compliance while also harming web usability. -->
+To deter privacy-intrusive practices and address the ubiquitous tracking on the internet, the EU introduced privacy regulations such as the General Data Protection Regulation (GDPR) and the ePrivacy Directive. These laws mandate, in particular, that websites inform users about the explicit purposes for which their data is collected. This has led to the global adoption of cookie notices, which are now unavoidable when browsing the web. 
 
-These past studies are however significantly constrained, giving us biased measurements. Either they depend on specific technologies present in a subset of consent notice or they are manual and therefore cannot scale. Our work addresses these constraints by a crawler that interact with the notices and machine learning that classifies declared and observed practices of websites.
+Several studies, including our own [CookieBlock](https://karelkubicek.github.io/post/cookieblock), showed high levels of non-compliance with the regulations. However, these studies are significantly constrained, giving us biased measurements. They either depend on specific technologies present in a subset of consent notices or they are manual and therefore cannot be scaled up. Our work addresses these constraints using a crawler that interacts with the cookie notice and machine learning models that classify declared and observed practices of the website.
 
-### Crawler interacting with notices
 
-The past automated studies relied on the API used by specific cookie notices. We created a crawler that detects notices using a heuristic based on 1) a crowd-sourced [EasyList Cookie](https://secure.fanboy.co.nz/fanboy-cookiemonster.txt), 2) [z-index](https://developer.mozilla.org/en-US/docs/Web/CSS/z-index) of the notice, and 3) filtering based on spaCy library. Then it does not stop at the notice front page, but it navigates the notice as a graph using DFS, observing what interaction is available. This allows us to perceive the notices as users do, not as the API specifies them.
+### A crawler that interacts with cookie notices
 
-We then browse the website after different interactions with the notice: rejecting or accepting the cookies, saving default settings, dismissing the notice with a close button, or not interacting at all.
+Previous automated studies relied on the API used by websites that relied on specific Consent Management Platforms (*CMP*). We created a crawler that detects cookie notices using a heuristic based on 1) a crowd-sourced [EasyList Cookie](https://secure.fanboy.co.nz/fanboy-cookiemonster.txt), 2) the [z-index](https://developer.mozilla.org/en-US/docs/Web/CSS/z-index) of the cookie notice, and 3) [sentence segmentation models](https://spacy.io/usage/models). 
+
+The crawler is not limited to the front page of the cookie notice as it navigates the notice with a DFS approach. This allows us to perceive the cookie notices as users do, not as the API specifies them.
+
+The crawler browses the websites after performing several actions: rejecting or accepting the cookies, saving default settings, dismissing the notice with a close button, or not interacting at all. For each action, we extract the set of cookies resulting from interacting with it, which we rely on to predict whether websites honor user choices.
 
 Using machine translation and multilingual models, we support websites in the following languages: Danish, Dutch, English, Finnish, French, German, Italian, Portuguese, Polish, Spanish, and Swedish.
-
 
 *Below, we show you an interactive cookie notice example. All elements in blue dotted boxes contain descriptions of how our ML models would classify them, which is available when you hover your mouse over them. You need JS to see the demo.*
 
@@ -245,26 +248,26 @@ function nextPrev(n, consent = "") {
 
 ### ML and NLP models
 
-Crawler extracts the declared behavior by the notice (its text and interaction choices), as well as the observed behavior (cookies that were used by the website depending on our notice interaction). We reason about the collected data using three ML models.
+The crawler extracts the declared behavior as describe in the cookie notice (its text and interactive elements), as well as the observed behavior (cookies that were used by the website depending on the action performed on the cookie notice). We reason about the collected data using three ML models.
 
 * We predict the declared data collection purposes in the notice text using a BERT model. We trained this model using the dataset by [Santos et al.](https://arxiv.org/abs/2110.02597), where we reduced labels to binary decision whether the sentence declares data processing purpose that requires users' consent. This included the following purposes: profiling, advertising, custom content, analytics, and social media features. This model reaches 97.6% accuracy.
-* We predict the purpose of interactive elements of the cookie notice using a BERT model trained on a dataset of 2353 interactive elements annotated in notices by us. The labels are accept, reject, close, save, settings, and other. This model achieves 95.1% accuracy.
-* We classify whether the website uses cookies that require consent using an XGBoost model. This model is based on the prior [CookieBlock](https://karelkubicek.github.io/post/cookieblock) work, but it operates over all cookies of website, allowing us to classify when website uses such cookies with a precision of 98.67% and a recall of 91.82%.
+* We predict the purpose of interactive elements of the cookie notice using a BERT model trained on a dataset of 2353 interactive elements annotated by us. The labels are accept, reject, close, save, settings, and other. This model achieves 95.1% accuracy.
+* We classify whether the website uses cookies that require consent using an XGBoost model. This model is based on the prior [CookieBlock](https://karelkubicek.github.io/post/cookieblock) work and allows us to classify when a website uses AA cookies with a precision of 98.67% and a recall of 91.82%.
 
 
 ### Violation detection
 
-We select 97k websites for crawling using Chrome UX report. This list generalizes the real browsing patterns the best ([Ruth et al.](https://doi.org/10.1145/3517745.3561444)). Selecting EU (+UK) countries that speak one of the supported languages ensures that the websites target users under GDPR.
+We crawl 97k websites selected using the Chrome UX report, which better represents real browsing patterns than other lists ([Ruth et al.](https://doi.org/10.1145/3517745.3561444)). We select the EU (+UK) countries that speak one of the supported languages to ensure that the websites target users under the GDPR.
 
-The crawled data allows us to reason about differences between declared and observed behavior. The outputs of ML models are parameters for or decision tree, which outputs ten privacy violations or dark patterns.
+The crawled data allows us to reason about the differences between declared and observed behavior. The outputs of the crawler and machine learning models serve as parameters for a decision tree, which outputs ten privacy violations or dark patterns.
 
 ![Decision tree for violations](https://ahmedbouhoula.github.io/assets/images/automated/decision_violations.svg)
-*Decision tree that takes as input the classifications by our model and outputs all types of potential violations present on the website.*
+*Decision tree that takes as input the classifications by our model and outputs all types of potential violations present on the website. "AA cookies" stands for Analytics or Advertising cookies. Such cookies require consent under EU regulations.*
 
 ![Decision tree dark patterns](https://ahmedbouhoula.github.io/assets/images/automated/decision_darkpatterns.svg){: style="float: left; width:50%"}![Observed violations](https://ahmedbouhoula.github.io/assets/images/automated/violations_bar.svg){: style="float: left;width:50%;"}
 *On the left, the decision tree of dark patterns. On the right, observed statistics of potential violations and dark patterns.*
 
-### Selected results of specific populations
+### Aggregated results 
 
 We can parametrize website selection based on the country, popularity rank, and the consent notice technology the website uses. We list the most important observations, all of them are statistically significant:
 
@@ -273,8 +276,6 @@ We can parametrize website selection based on the country, popularity rank, and 
 
 ![Violations per rank](https://ahmedbouhoula.github.io/assets/images/automated/violations_bar_per_rank.svg){: style="float: left; width:50%"}![Violations bias comparison](https://ahmedbouhoula.github.io/assets/images/automated/violations_bias.svg){: style="float: left;width:50%;margin-bottom:20px;margin-top:20px;"}
 *On the left, we present violations per rank from the Chrome UX report. On the right, we compare our results with other studies and investigate whether their website selection caused any bias.*
-
-
 
 ### Q&A
 
