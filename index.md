@@ -6,7 +6,7 @@ layout: default
 
 <img class="profile-picture" src="ahmed.jpeg">
 
-I am a PhD Student at the Department of Computer Science at ETH Zurich. I am part of the [Information Security Group](https://infsec.ethz.ch/), supervised by [David Basin](http://people.inf.ethz.ch/basin/).
+I am a PhD Student at the Department of Computer Science at ETH Zurich. I am part of the [Information Security Group](https://infsec.ethz.ch/), supervised by Prof. [David Basin](http://people.inf.ethz.ch/basin/).
 
 
 ## Education
