@@ -45,7 +45,7 @@ keywords: cookies, CMP, GDPR, privacy
 
 To deter privacy-intrusive practices and address the ubiquitous tracking on the internet, the EU introduced privacy regulations such as the General Data Protection Regulation (GDPR) and the ePrivacy Directive. These laws mandate, in particular, that websites inform users about the explicit purposes for which their data is collected. This has led to the global adoption of cookie notices, which are now unavoidable when browsing the web. 
 
-Several studies, including our own [CookieBlock](https://karelkubicek.github.io/post/cookieblock), showed high levels of non-compliance with the regulations. However, these studies are significantly constrained, giving us biased measurements. They either depend on specific technologies present in a subset of consent notices or they are manual and therefore cannot be scaled up. Our work addresses these constraints using a crawler that interacts with the cookie notice and machine learning models that classify declared and observed practices of the website.
+Several studies, including [CookieBlock](https://karelkubicek.github.io/post/cookieblock), showed high levels of non-compliance with the regulations. However, these studies are significantly constrained, leading to biased measurements. They either depend on specific technologies present in a subset of consent notices or they are manual and therefore cannot be scaled up. Our work addresses these constraints using a crawler that interacts with the cookie notice and machine learning models that classify declared and observed practices of the website.
 
 
 ### A crawler that interacts with cookie notices
@@ -56,7 +56,7 @@ The crawler is not limited to the front page of the cookie notice as it navigate
 
 The crawler browses the websites after performing several actions: rejecting or accepting the cookies, saving default settings, dismissing the notice with a close button, or not interacting at all. For each action, we extract the set of cookies resulting from interacting with it, which we rely on to predict whether websites honor user choices.
 
-Using machine translation and multilingual models, we support websites in the following languages: Danish, Dutch, English, Finnish, French, German, Italian, Portuguese, Polish, Spanish, and Swedish.
+Using machine translation, we support websites in the following languages: Danish, Dutch, English, Finnish, French, German, Italian, Portuguese, Polish, Spanish, and Swedish.
 
 *Below, we show you an interactive cookie notice example. All elements in blue dotted boxes contain descriptions of how our ML models would classify them, which is available when you hover your mouse over them. You need JS to see the demo.*
 
@@ -249,11 +249,11 @@ function nextPrev(n, consent = "") {
 
 ### ML and NLP models
 
-The crawler extracts the declared behavior as describe in the cookie notice (its text and interactive elements), as well as the observed behavior (cookies that were used by the website depending on the action performed on the cookie notice). We reason about the collected data using three ML models.
+The crawler extracts the declared behavior as described in the cookie notice (its text and interactive elements), as well as the observed behavior (cookies that were used by the website depending on the action performed on the cookie notice). We reason about the collected data using three ML models.
 
-* We predict the declared data collection purposes in the notice text using a BERT model. We trained this model using the dataset by [Santos et al.](https://arxiv.org/abs/2110.02597), where we reduced labels to binary decision whether the sentence declares data processing purpose that requires users' consent. This included the following purposes: profiling, advertising, custom content, analytics, and social media features. This model reaches 97.6% accuracy.
+* We predict the declared data collection purposes in the notice text using a BERT model. We trained this model using the dataset by [Santos et al.](https://arxiv.org/abs/2110.02597), where we reduced labels to binary decision whether the sentence declares data processing purpose that requires users' consent. This included the following purposes: profiling, advertising, custom content, analytics, and social media features. This model achieves an accuracy of 97.6%.
 * We predict the purpose of interactive elements of the cookie notice using a BERT model trained on a dataset of 2353 interactive elements annotated by us. The labels are accept, reject, close, save, settings, and other. This model achieves 95.1% accuracy.
-* We classify whether the website uses cookies that require consent using an XGBoost model. This model is based on the prior [CookieBlock](https://karelkubicek.github.io/post/cookieblock) work and allows us to classify when a website uses AA cookies with a precision of 98.67% and a recall of 91.82%.
+* We classify whether the website uses cookies that require consent using an XGBoost model. This model is based on the prior work [CookieBlock](https://karelkubicek.github.io/post/cookieblock) and allows us to classify when a website uses Analytics or Advertising cookies (*AA cookies*) with a precision of 98.7% and a recall of 91.9%.
 
 
 ### Violation detection
@@ -263,26 +263,22 @@ We crawl 97k websites selected using the Chrome UX report, which better represen
 The crawled data allows us to reason about the differences between declared and observed behavior. The outputs of the crawler and machine learning models serve as parameters for a decision tree, which outputs ten privacy violations or dark patterns.
 
 ![Decision tree for violations](https://ahmedbouhoula.github.io/assets/images/automated/decision_violations.svg)
-*Decision tree that takes as input the classifications by our model and outputs all types of potential violations present on the website. "AA cookies" stands for Analytics or Advertising cookies. Such cookies require consent under EU regulations.*
+*Decision tree that takes as input the outputs of the crawl and ML models. It outputs all types of potential violations present on the website. "AA cookies" stands for Analytics or Advertising cookies. Such cookies require consent under EU regulations.*
 
 ![Decision tree dark patterns](https://ahmedbouhoula.github.io/assets/images/automated/decision_darkpatterns.svg){: style="float: left; width:50%"}![Observed violations](https://ahmedbouhoula.github.io/assets/images/automated/violations_bar.svg){: style="float: left;width:50%;"}
 *On the left, the decision tree of dark patterns. On the right, observed statistics of potential violations and dark patterns.*
 
 ### Aggregated results 
 
-We can parametrize website selection based on the country, popularity rank, and the consent notice technology the website uses. We list the most important observations, all of them are statistically significant:
+We can parametrize website selection based on the country, popularity rank, or the consent provider used by the website. We list the most important observations, all of them are statistically significant:
 
-* Popular websites have fewer **visible violations** such as missing notice, missing reject button, or undeclared purposes than less popular websites. Yet when it comes to how they **track users** the situation is the opposite. Popular websites ignore rejected consent, assume consent before user interacts with the notice, or assume consent after user uses "close button" more often than less popular websites.
-* Sampling bias of prior studies, stemming from reliance on specific consent notice technologies, makes the majority of observed results vastly different from Chrome UX report sample. Specifically, websites using [Transparency & Consent Framework](https://iabeurope.eu/transparency-consent-framework/) studied by [Matte et al.](https://doi.org/10.1109/SP40000.2020.00076) are far more violating consent.
+* More popular websites have fewer **visible violations** such as missing notice, missing reject button, or undeclared purposes than less popular websites. However, these websites are more likely to ignore rejected consent, or assume the user's consent before they interact with the notice.
+* Prior studies suffer from a selection bias stemming from restricting the analysis to websites using specific consent providers. We show this by applying such restrictions to our results. For example, we find that restricting the analysis to websites using the [Transparency & Consent Framework](https://iabeurope.eu/transparency-consent-framework/) (studied by [Matte et al.](https://doi.org/10.1109/SP40000.2020.00076)) leads to results that diverge greatly from those on our overall sample of websites.
 
 ![Violations per rank](https://ahmedbouhoula.github.io/assets/images/automated/violations_bar_per_rank.svg){: style="float: left; width:50%"}![Violations bias comparison](https://ahmedbouhoula.github.io/assets/images/automated/violations_bias.svg){: style="float: left;width:50%;margin-bottom:20px;margin-top:20px;"}
-*On the left, we present violations per rank from the Chrome UX report. On the right, we compare our results with other studies and investigate whether their website selection caused any bias.*
+*On the left, we present violations per rank. On the right, we compare our results with other studies.*
 
 ### Q&A
-
-* **Q:** How can I access the study results or code?
-
-  **A:** Since our work depends on ML, it can produce false positives. To reduce the impact of false reporting of individual websites violating regulations, we restrict access upon request. Please fill [this form](https://forms.gle/4cPPLnkwA241sKbP6) to get access.
 
 * **Q:** What is the probability that your violation decision tree produces false positives?
 
