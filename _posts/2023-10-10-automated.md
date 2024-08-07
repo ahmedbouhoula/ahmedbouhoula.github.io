@@ -21,7 +21,7 @@ keywords: cookies, CMP, GDPR, privacy
 <!-- * Download author pre-print of the paper: [PDF](https://ahmedbouhoula.github.io/assets/pdf/Generalized_GDPR_Violation_Detection_in_Cookie_Notices_preprint.pdf) -->
 * Conference page: [USENIX Security 2024](https://www.usenix.org/conference/usenixsecurity24/presentation/bouhoula)
 * Download author pre-print of the paper: [PDF](https://ahmedbouhoula.github.io/assets/pdf/bouhoula2024automated.pdf)
-* Source code: [github](https://github.com/bouhoula/alsacnc)
+* Source code: [Github](https://github.com/bouhoula/alsacnc)
 * Request data access: [Google form](https://forms.gle/4cPPLnkwA241sKbP6)
 
 ### BibTex
