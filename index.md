@@ -11,7 +11,7 @@ I am a PhD Student at the Department of Computer Science at ETH Zurich. I am par
 
 ## Education
 
-Year | Award | Category
+When | Where | What
 -----|-------|--------
 2022- | ETH Zurich | Doctoral Student
 2020-2022 | ETH Zurich | M.Sc. Computer Science
