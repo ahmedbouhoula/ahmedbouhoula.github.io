@@ -39,4 +39,4 @@ When | Where | What
 
 ## Contact
 
-You can contact me at <img src="assets/images/email.png" style="width: 30%; height: 30%">
+You can contact me at <img src="assets/images/email.png" style="width: 30%; height: 30%"> <span style="color: transparent;">ahmed.bouhoula.c901@sybilmail.de</span>
